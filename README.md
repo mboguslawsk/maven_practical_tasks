@@ -1,0 +1,1 @@
+# maven_practical_tasks
