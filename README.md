@@ -1,68 +1,86 @@
-# maven_practical_tasks
+# Maven Practical Tasks
 
-1-2. Install locally the latest versions of Java and Maven.
-    ​​Go to https://github.com/spring-projects/spring-petclinic, fork it and clone the forked repo.
+## 1-2. Install locally the latest versions of Java and Maven.
+​
+​Go to https://github.com/spring-projects/spring-petclinic, fork it and clone the forked repo.
 
-Done
+*Done.*
 
+---
 
-3\. Perform validation to check if the project is correct.
+## 3. Perform validation to check if the project is correct.
 
-Commands:
-    
-    mvn validate
+**Command:**
+
+```bash
+mvn validate
+```
 
 <p align="center"> <img src="img/img1.png" alt="Img" width="80%"> </p>
 
-3\. Build JAR artifact from source code, run the application locally and see the web interface in the browser.
+## 4. Build JAR artifact from source code, run the application locally and see the web interface in the browser.
 
-Command:
-    
-    mvn package
+**Command:**
+
+```bash
+mvn package
+```
 
 <p align="center"> <img src="img/img2.png" alt="Img" width="80%"> </p>
 
-Command:
+**Command:**
 
-    java -jar target/*.jar
+```bash
+java -jar target/*.jar
+```
 
 <p align="center"> <img src="img/img3.png" alt="Img" width="80%"> </p>
 
-Browser check:
+**Browser check:**
 
-    http://localhost:8080
+```
+http://localhost:8080
+```
 
 <p align="center"> <img src="img/img4.png" alt="Img" width="80%"> </p>
 
+---
 
-4\. Increase project Major version (e.g. from 3.2.0 to 4.0.0) without interactive mode. Use release plugin.
+## 5. Increase project Major version (e.g. from 3.2.0 to 4.0.0) without interactive mode. Use release plugin.
 
-Okay, by default you can just change pom.xml file, like this:
+Okay, by default, you can manually change the version in the `pom.xml` file:
 
 from:
 
-    <version>3.2.0</version>
+```xml
+<version>3.2.0</version>
+```
 
-to:
+to
 
-    <version>4.0.0</version>
+```xml
+<version>4.0.0</version>
+```
+
 
 
 But to change it non-itectively we should use a plugin `"Versions Maven Plugin"`.
 
-Command:
+**Command:**
 
-    mvn versions:set -DnewVersion=4.0.0 -DgenerateBackupPoms=false
+```bash
+mvn versions:set -DnewVersion=4.0.0 -DgenerateBackupPoms=false
+```
 
-Result:
+**Result:**
 
 <p align="center"> <img src="img/img5.png" alt="Img" width="80%"> </p>
 
+---
 
+## 6. In the pom file add <scm> section with your repo address. Prepare code to release.
 
-6\. In the pom file add <scm> section with your repo address. Prepare code to release.
-
-Pasted code into the "\<project\>" in the `"pom.xml"`:
+Pasted code into the `<project>` in the `"pom.xml"`:
 
 
 ```xml
@@ -76,17 +94,17 @@ Pasted code into the "\<project\>" in the `"pom.xml"`:
 
 Where:
 
-- `<connection>` - anonymous read access to the repository.
+* `<connection>` - anonymous read access to the repository.
 
-- `<developerConnection>` - read/write access (via SSH).
+* `<developerConnection>` - read/write access (via SSH).
 
-- `<url>` - the browser-accessible URL for the repo.
+* `<url>` - the browser-accessible URL for the repo.
 
-- `<tag>` - the tag Maven will use when releasing. Normally set to HEAD (current commit) during development.
+* `<tag>` - the tag Maven will use when releasing. Normally set to HEAD (current commit) during development.
 
+---
 
-
-7\. Try to prepare a release in non-interactive mode.
+## 7. Try to prepare a release in non-interactive mode.
 
 Pasted xml-code in the `<plugins>` scope:
 
@@ -100,35 +118,41 @@ Pasted xml-code in the `<plugins>` scope:
 
 Commited. And run a command to prepare for release:
 
-```
-    mvn release:clean release:prepare -B \
+```bash
+mvn release:clean release:prepare -B \
   -DreleaseVersion=4.0.0 \
   -Dtag=4.0.0 \
   -DdevelopmentVersion=4.1.0-SNAPSHOT
 ```
 
-Where `SNAPSHOT` version is a work-in-progress version.
+Where `SNAPSHOT` version is a work-in-progress version. And `-B` enables non-interactive mode.
 
-Got error, which means that current version needs to end in `-SNAPSHOT`:
+Got error, which means that the current version must end with `-SNAPSHOT`:
 
 <p align="center"> <img src="img/img6.png" alt="Img" width="80%"> </p>
 
-So I had to change it using this command and after that commited changes:
+Fix it by setting the version to a snapshot, then commit:
 
-    mvn versions:set -DnewVersion=4.0.0-SNAPSHOT -DgenerateBackupPoms=false
+```bash
+mvn versions:set -DnewVersion=4.0.0-SNAPSHOT -DgenerateBackupPoms=false
+```
 
-After that success:
+After that - success:
 
 <p align="center"> <img src="img/img7.png" alt="Img" width="80%"> </p>
 
-7-8\. Try to perform the release of artifacts.
+---
+
+## 8. Try to perform the release of artifacts.
 
 
-Command for release:
+**Command for release:**
 
-    mvn release:perform -B
+```bash
+mvn release:perform -B
+```
 
-Error appeared, which has been resolved by editing `<plugin>` scope (not deploying to the Maven repo):
+Error appeared, which has been resolved by editing `<plugin>` scope (to skip deployment):
 
 ``` xml
 <plugin>
@@ -140,16 +164,20 @@ Error appeared, which has been resolved by editing `<plugin>` scope (not deployi
 </plugin>
 ```
 
-Success:
+After this adjustment - success:
 
 <p align="center"> <img src="img/img8.png" alt="Img" width="80%"> </p>
 
-9\. Perform release cleanup.
+---
 
-Clean up command:
+## 9. Perform release cleanup.
 
-    mvn release:clean
+**Clean up command:**
 
-Result:
+```bash
+mvn release:clean
+```
+
+**Result:**
 
 <p align="center"> <img src="img/img9.png" alt="Img" width="80%"> </p>
